@@ -16,7 +16,7 @@
 
 #include <SFML/Graphics.hpp>
 
-struct Particle : public sf::Drawable
+struct Particle
 {
   sf::Vertex _vertex;
   sf::Vector2f _direction;
@@ -27,11 +27,6 @@ struct Particle : public sf::Drawable
 
   Particle(const sf::Vertex& vertex, const sf::Vector2f& direction, float acceleration, float resistance, float mass, float ttl) :
   _vertex(vertex), _direction(direction), _acceleration(acceleration), _resistance(resistance), _mass(mass), _ttl(ttl) {}
-
-  void draw(sf::RenderTarget &target, sf::RenderStates states) const override
-  {
-    target.draw(&_vertex, 1, sf::Points, states);
-  }
 };
 
 using ParticlePtr = std::shared_ptr<Particle>;

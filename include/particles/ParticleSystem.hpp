@@ -36,6 +36,7 @@ public:
 private:
   sf::Vector2f _gravity;
   std::vector<std::shared_ptr<Particle>> _particles;
+  std::vector<sf::Vertex> _buffer;
 
   void cleanUp();
 };

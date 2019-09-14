@@ -22,6 +22,7 @@ void ParticleSystem::Emit(const std::vector<std::shared_ptr<Particle>>& particle
 
 void ParticleSystem::cleanUp()
 {
+  _buffer.clear();
   _particles.erase(remove_if(_particles.begin(), _particles.end(),
           [](const shared_ptr<Particle>& particle) { return particle->_ttl < 0.0f; }), _particles.end());
 }
@@ -36,19 +37,19 @@ void ParticleSystem::Update(float dt)
     auto fall = particle->_mass * _gravity;
     particle->_vertex.position += (particle->_direction + fall) * particle->_acceleration * dt;
     particle->_acceleration -= particle->_resistance * dt;
+    _buffer.push_back(particle->_vertex);
   }
 }
 
 void ParticleSystem::Clear()
 {
+  _buffer.clear();
   _particles.clear();
 }
 
 void ParticleSystem::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-  for(auto& particle : _particles) {
-    particle->draw(target, states);
-  }
+  target.draw(&_buffer[0], _buffer.size(), sf::Points, states);
 }
 
 ParticleSystem::ParticleSystem(const sf::Vector2f& gravity) : _gravity(gravity)
